@@ -1,0 +1,60 @@
+body{
+    background-image:url("imagen1.jpg");
+}
+
+
+.name .contenido .p-1{
+    color: black;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: auto;
+    font-size: xx-large;
+    
+}
+
+.info .tituloseccion{
+    color: ghostwhite;
+    font-family: 'Open Sans', sans-serif;
+    font-size: medium;
+    text-align: center;
+    font-weight: bolder;
+    border-bottom: 2px black solid;
+}
+
+.info .tituloinfo{
+    color: ghostwhite;
+    font-family: 'Open Sans', sans-serif;
+    font-size: medium;
+    font-weight: bolder;
+    display: inline;
+}
+#R1
+{
+    margin-right: 2px;
+    position: absolute;
+    left: 670px;
+    top: 215px;
+    margin-top: 5px;
+    align-content: center;
+    color: white;
+}
+
+#C1
+{
+    margin-right: 2px;
+    position: absolute;
+    left: 970px;
+    top: 350px;
+    margin-top: 5px;
+    align-content: center;
+    color: white;
+}
+#C2
+{
+    margin-right: 2px;
+    position: absolute;
+    left: 380px;
+    top: 350px;
+    margin-top: 5px;
+    align-content: center;
+    color: black;
+}

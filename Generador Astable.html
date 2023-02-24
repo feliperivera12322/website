@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>generador</title>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+
+
+    <div class="col-md-9 main-pane">
+        <section class="content-header">
+            <h1>LM555 Astable. 
+            </h1>
+            
+        </section>
+        <div class="row">
+            <div class="col-md-9">
+                <main>
+                  <div class="row"  style="margin-bottom: 15px">
+<div class="col-lg-7 col-md-7">
+    <p>El temporizador 555 se puede utilizar en circuitos astables y monoestables.</p> 
+    <p>En un circuito astable, el voltaje de salida alterna entre VCC y 0 voltios de manera continua.</p>
+    <br/>
+    <p>Seleccionando valores para R1, R2 y C podemos determinar el período/frecuencia.</p>
+    <p>El período es el tiempo que tarda el ciclo de encendido/apagado en repetirse.</p>  
+    <p> es decir: T<sub>1</sub>/T.</p>
+    <p>En este tipo de circuito, el ciclo de trabajo nunca puede ser del 50 % o menos.</p>
+   
+</div>
+<div class="col-lg-5 col-md-5">
+<img src="astable.png" />
+</div>
+</div>
+<FORM METHOD="POST">
+    <div class="row form-group">
+        <label class="col-md-5">Capacitor (C)</label>
+        <div class="col-md-3"><INPUT class="form-control" TYPE=text  id="iCapacitor" placeholder="capacitance" value="10"></div>
+        <div class="col-md-3">
+            <select class="form-control" id="sCapacitorUnit">
+                <option value=".000000001">nanoFarad (nF)</option>
+                <option value=".000001" selected="selected">microFarad (&mu;F)</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <label class="col-md-5">Resistance 1 (R<sub>1</sub>)</label>
+        <div class="col-md-3"><INPUT class="form-control" TYPE=text id="iResistance1" placeholder="resistance 1" value="10"></div>
+        <div class="col-md-3">
+            <select class="form-control" id="sResistance1Unit">
+                <option value="1">ohms (&Omega;)</option>
+                <option value="1000"  selected="selected">kilohms (k&Omega;)</option>
+                <option value="1000000">megaohms (m&Omega;)</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <label class="col-md-5">Resistance 2 (R<sub>2</sub>)</label>
+        <div class="col-md-3"><INPUT class="form-control" TYPE=text id="iResistance2" placeholder="resistance 2" value="10"></div>
+        <div class="col-md-3">
+            <select class="form-control" id="sResistance2Unit">
+                <option value="1">ohms (&Omega;)</option>
+                <option value="1000"  selected="selected">kilohms (k&Omega;)</option>
+                <option value="1000000">megaohms (m&Omega;)</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10">
+        <hr/>
+        </div>
+        </div>
+
+    <div class="row form-group">
+        <label class="col-md-5">Frequency</label>
+        <div class="col-md-3"><INPUT class="form-control" TYPE=text  id="iFrequency" placeholder="output frequency" disabled="disabled"></div>
+        <div class="col-md-3""><INPUT class="form-control" TYPE=text  id="unitFrequency" placeholder="output frequency" disabled="disabled"></div>
+    </div>
+
+    <div class="row form-group">
+        <label class="col-md-5">Period (T)</label>
+        <div class="col-md-3"><INPUT class="form-control" TYPE=text  id="iPeriod" placeholder="output period" disabled="disabled"></div>
+        <div class="col-md-3"><INPUT class="form-control" TYPE=text  id="unitPeriod" placeholder="output period" disabled="disabled"></div>
+    </div>
+
+    <script src="jquery-2.2.4.min.js"></script>
+    <script src="jquery-ui.min.js" type="text/javascript"></script>
+        <script>    var farads=0.000010;
+        var ohms1=10000;
+        var ohms2=10000;
+    
+        function readFarads(inedit)
+    {
+	   	var val=$('#iCapacitor').val();
+        var scale=$('#sCapacitorUnit').val();
+        if (val=="" || val==null)
+        {
+            farads=null;
+        }
+        else if ($.isNumeric(val))
+        {
+            farads=Number(val)*Number(scale);
+        }
+        else if (!inedit)
+        {
+            $('#iCapacitor').val(farads/scale);
+        }
+    }
+
+
+    function readOhms1(inedit)
+    {
+	   	var val=$('#iResistance1').val();
+        var scale=$('#sResistance1Unit').val();
+        if (val=="" || val==null)
+        {
+            ohms1=null;
+        }
+        else if ($.isNumeric(val))
+        {
+            ohms1=Number(val)*Number(scale);
+        }
+        else if (!inedit)
+        {
+            $('#iResistance1').val(ohms1/scale);
+        }
+    }
+
+    function readOhms2(inedit)
+    {
+	   	var val=$('#iResistance2').val();
+        var scale=$('#sResistance2Unit').val();
+        if (val=="" || val==null)
+        {
+            ohms2=null;
+        }
+        else if ($.isNumeric(val))
+        {
+            ohms2=Number(val)*Number(scale);
+        }
+        else if (!inedit)
+        {
+            $('#iResistance2').val(ohms2/scale);
+        }
+    }
+    
+    function formatNumber(__number,__decimalPlaces)
+    {
+    	nStr=__number.toFixed(__decimalPlaces);
+    	nStr += '';
+    	x = nStr.split('.');
+    	x1 = x[0];
+    	x2 = x.length > 1 ? '.' + x[1] : '';
+    	var rgx = /(\d+)(\d{3})/;
+    	while (rgx.test(x1)) {
+    		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    	}
+    	return x1 + x2;
+    }
+    
+    function displayTime(__id1,__id2,__value)
+    {
+    	if (__value>1)
+    	{
+    		$('#'+__id1).val(formatNumber(__value,3));
+            $('#'+__id2).val("seconds (s)");
+    	}
+    	else if (__value>1/1000)
+    	{
+    		$('#'+__id1).val(formatNumber(__value*1000,3));
+            $('#'+__id2).val("milliseconds (ms)");
+    	}
+    	else if (__value>1/1000000)
+    	{
+       		$('#'+__id1).val(formatNumber(__value*1000000,3));
+            $('#'+__id2).val("microseconds (&mu;s)");
+    	}
+    	else
+    	{
+       		$('#'+__id1).val(formatNumber(__value*1000000000,3));
+            $('#'+__id2).val("nanoseconds (ns)");
+    	}
+    }
+    
+    
+    function calc()
+    {
+        if(farads>0 && (ohms1+ohms2)>0)
+    	{
+    		var timeH=0.693*(ohms1+ohms2)*farads;
+    		var timeL=0.693*ohms2*farads;
+    		var timeTotal = timeH + timeL;
+    		var dutyCycle= timeH*100/timeTotal;
+    		
+            //Display the Frequency
+    		if ((1/timeTotal)>1000000)
+    		{
+    			$('#iFrequency').val(formatNumber(1/timeTotal/1000000,3));
+                $('#unitFrequency').val("Megahertz (MHz)");
+    		}
+    		else if ((1/timeTotal)>1000)
+    		{
+    			$('#iFrequency').val(formatNumber(1/timeTotal/1000,3));
+                $('#unitFrequency').val("Kilohertz (KHz)");
+    		}
+    		else
+    		{
+    			$('#iFrequency').val(formatNumber(1/timeTotal,3));
+                $('#unitFrequency').val("Hertz (Hz)");
+    		}
+            $('#iDuty').val(formatNumber(dutyCycle,2));
+    		
+    		displayTime("iPeriod","unitPeriod",timeTotal);
+    		displayTime("iHigh","unitHigh",timeH);
+    		displayTime("iLow","unitLow",timeL);
+    	}
+       
+
+        function name(params) {
+            
+        }
+    }
+
+    $(document).ready(function () {
+        calc();
+    
+        $('#iCapacitor').change(function () {
+            readFarads(false);
+            calc();
+        });
+        $('#iCapacitor').keyup(function () {
+            readFarads(true);
+            calc();
+        });
+
+        $('#sCapacitorUnit').change(function () {
+            readFarads(false);
+            calc();
+        });
+        
+        $('#iResistance1').change(function () {
+            readOhms1(false);
+            calc();
+        });
+        $('#iResistance1').keyup(function () {
+            readOhms1(true);
+            calc();
+        });
+    
+        $('#sResistance1Unit').change(function () {
+            readOhms1(false);
+            calc();
+        });
+    
+        $('#iResistance2').change(function () {
+            readOhms2(false);
+            calc();
+        });
+        $('#iResistance2').keyup(function () {
+            readOhms2(true);
+            calc();
+        });
+    
+        $('#sResistance2Unit').change(function () {
+            readOhms2(false);
+            calc();
+        });
+
+    
+        $('input').not('#search input').keyup(function(e) {
+            var focusables = $("input:focusable").not('#search input');      
+            if (e.keyCode == 40) {
+                // down key
+                var current = focusables.index(this);
+                next = focusables.eq(current+1).length ? focusables.eq(current+1) : focusables.eq(0);
+                next.focus();
+            } else if (e.keyCode == 38) {
+                // up key
+                var current = focusables.index(this),
+                prev = focusables.eq(current-1).length ? focusables.eq(current-1) : focusables.eq(focusables.length-1);
+                prev.focus();
+            }
+        });
+    })
+
+    </script>
+    
+
+    
+    
+    
+</body>
+</html>
+
